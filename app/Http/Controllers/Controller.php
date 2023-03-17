@@ -11,13 +11,29 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function getNews(int $id = null): array
+    public function getCategories(): array {
+        $categories = [];
+        $faker = Factory::create();
+        for($i=1; $i<10; $i++) {
+            $categories[$i] = [
+                'title' => $faker->jobTitle(),
+                'description' => $faker->text(100),
+                'created_at' => now('Europe/Moscow')
+            ];
+            return $categories;
+        }
+    }
+
+    public function getNews(int $catId = null, int $id = null): array
     {
         $news = [];
         $faker = Factory::create();
+
+
         if($id) {
             return [
                 'title' => $faker->jobTitle(),
+                'category' => $faker->jobTitle(),
                 'author' => $faker->userName(),
                 'status' => 'Draft',
                 'description' => $faker->text(100),
@@ -25,15 +41,28 @@ class Controller extends BaseController
             ];
         }
 
+        if ($catId) {
+            $category = $faker->jobTitle();
+            for($i=1; $i<10; $i++) {
+                $news[$i] = [
+                    'title' => $faker->jobTitle(),
+                    'category' => $category,
+                    'author' => $faker->userName(),
+                    'status' => 'Draft',
+                    'description' => $faker->text(100),
+                    'created_at' => now('Europe/Moscow')
+                ];
+            }
+            return $news;
+        }
+
         for($i=1; $i<10; $i++) {
-            $news[$i] = [
+            $categories[$i] = [
                 'title' => $faker->jobTitle(),
-                'author' => $faker->userName(),
-                'status' => 'Draft',
                 'description' => $faker->text(100),
                 'created_at' => now('Europe/Moscow')
             ];
         }
-        return $news;
+        return $categories;
     }
 }

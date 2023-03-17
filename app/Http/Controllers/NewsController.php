@@ -13,8 +13,15 @@ class NewsController extends Controller
         ]);
     }
 
+    public function category(int $catId) {
+        $newsList = $this->getNews($catId);
+        return view('news.category', [
+            'newsList' => $newsList
+        ]);
+    }
+
     public function show(int $id) {
-        $news = $this->getNews($id);
+        $news = $this->getNews(1, $id);
         return view('news.show', [
             'news' => $news
         ]);
