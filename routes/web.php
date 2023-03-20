@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +21,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{name}', function ( string $name) {
-    return "Hello, " . $name;
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function (): void {
+    Route::get('/', IndexController::class)->name('index');
+    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/news', AdminNewsController::class);
 });
 
-Route::get('/news', function () {
-    return "News";
-});
+Route::get('/news', [NewsController::class, 'index'])->name('news');
+Route::get('/news/{catId}', [NewsController::class, 'category'])
+    ->where('catId','\d+')
+    ->name('category');
+Route::get('/news/{catId}/{id}', [NewsController::class, 'show'])
+    ->where('id','\d+')
+    ->where('catId','\d+')
+    ->name('show');
 
-Route::get('/news/{id}', function ( string $id) {
-    return "News" . $id;
-});
