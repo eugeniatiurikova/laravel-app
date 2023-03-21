@@ -1,15 +1,22 @@
 @extends('layouts.main')
 @section('content')
-    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
-        <h1 class="display-4 font-italic">Categories of news</h1>
-    </div>
-    <div class="row">
+    <h1 class="fw-light">Categories of news</h1><br>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         @forelse($newsList as $key => $news)
-            <div class="col-lg-4">
-                <h3 class="mb-0"><a href="{{ route('category',['catId' => $key]) }}"> {{$news['title']}}</a></h3>
-                <div class="mb-1 text-muted">{{ $news['created_at'] }}</div>
-                <p>{!! $news['description'] !!}</p>
-                <br><br>
+
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b class="mb-0">
+                                <a href="{{ route('category',['catId' => $key]) }}"> {{$news['title']}}</a>
+                            </b><br>{!! $news['description'] !!}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ $news['created_at']->format('Y-m-d') }}</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         @empty
             <h2>No news today</h2>
