@@ -20,11 +20,11 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($newsList as $key => $news)
+            @foreach($categoriesList as $item)
                 <tr>
-                    <td>{{$news['title']}}</td>
-                    <td>{{$news['created_at']}}</td>
-                    <td><a href="{{ route('admin.categories.edit',['category' => $key]) }}">Edit</a> | <a href="">Delete</a></td>
+                    <td>{{$item->title}}</td>
+                    <td>{{$item->created_at}}</td>
+                    <td><a href="{{ route('admin.categories.edit',['category' => $item->id]) }}">Edit</a> | <a href="">Delete</a></td>
                 </tr>
             @endforeach
             </tbody>

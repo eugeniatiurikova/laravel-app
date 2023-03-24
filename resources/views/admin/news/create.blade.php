@@ -32,12 +32,20 @@
                 <div class="col-6">
                     <label for="category" class="form-label">Category</label>
                     <select class="form-select" name="category" id="category">
-                        <option>Choose category</option>
-                        <option>Some news category</option>
-                        <option>Another news category</option>
+                        <option>&nbsp;</option>
+                        @foreach ($categoryList as $category)
+                            <option>{{$category->title}}</option>
+                        @endforeach
                     </select>
                     <div class="invalid-feedback">
                         Category is required
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="url" class="form-control" name="image" id="image" value="{{ old('image') }}">
+                    <div class="invalid-feedback">
+                        News title is required
                     </div>
                 </div>
                 <div class="col-12">

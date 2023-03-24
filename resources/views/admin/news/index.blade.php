@@ -15,24 +15,24 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Category</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Status</th>
-                <th scope="col">Category</th>
                 <th scope="col">Created at</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($newsList as $key => $news)
+            @foreach($newsList as $news)
                 <tr>
-                    <td>{{$news['id']}}</td>
-                    <td>{{$news['title']}}</td>
-                    <td>{{$news['author']}}</td>
-                    <td>{{$news['status']}}</td>
-                    <td>{{$news['category']}}</td>
-                    <td>{{$news['created_at']}}</td>
-                    <td><a href="{{ route('admin.news.edit',['news' => $key]) }}">Edit</a> | <a href="">Delete</a></td>
+                    <td>{{$news->id}}</td>
+                    <td>{{$news->category_title}}</td>
+                    <td>{{$news->title}}</td>
+                    <td>{{$news->author}}</td>
+                    <td>{{$news->status}}</td>
+                    <td>{{$news->created_at}}</td>
+                    <td><a href="{{ route('admin.news.edit',['news' => $news->id]) }}">Edit</a> | <a href="">Delete</a></td>
                 </tr>
             @endforeach
             </tbody>
