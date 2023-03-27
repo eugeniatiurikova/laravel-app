@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\News\StatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class News extends Model
 {
@@ -15,23 +13,36 @@ class News extends Model
 
     protected $table = 'news';
 
-    public function getNews(array $columns = ['*']): Collection
-    {
-        return DB::table($this->table)
-            ->join('categories_has_news as chn','news.id','=', 'chn.news_id')
-            ->leftJoin('categories','chn.category_id','=','categories.id')
-            ->select('news.*','categories.title as category_title')
-//            ->whereIn('id', [1,7,10])
-//            ->where([
-//                ['title','like','%ti%'],
-//                ['id','>',3]
-//            ])
-//            ->orWhere('status','=',StatusEnum::PUBLISHED)
-            ->get($columns);
+    protected $fillable = [
+        'id',
+        'title',
+        'author',
+        'status',
+        'image',
+        'description',
+    ];
+
+//    protected $casts = [
+//        'is_admin' => 'bool'
+//    ];
+
+
+    public function scopeNews(Builder $query, array $columns = ['*']): Builder {
+        return $query->select($columns)->orderByDesc('updated_at');
     }
 
-    public function getNewsById(int $id, array $columns = ['*']): ?Builder
+    public function scopeNewsById(Builder $query, int $id, array $columns = ['*']): ?Builder
     {
-        return DB::table($this->table)->find($id,$columns);
+        return $query->select($columns)->where('id','=',$id);
     }
+
+
+    // Relations
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class,
+            'categories_has_news', 'news_id','category_id');
+    }
+
 }

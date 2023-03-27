@@ -11,12 +11,13 @@
         </div>
     </div>
     <div class="table-responsive">
+        @include('inc.message')
         <table class="table table-striped table-sm">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Category</th>
                 <th scope="col">Title</th>
+                <th scope="col">Categories</th>
                 <th scope="col">Author</th>
                 <th scope="col">Status</th>
                 <th scope="col">Created at</th>
@@ -27,8 +28,8 @@
             @foreach($newsList as $news)
                 <tr>
                     <td>{{$news->id}}</td>
-                    <td>{{$news->category_title}}</td>
                     <td>{{$news->title}}</td>
+                    <td>{{$news->categories->pluck('title')->implode(', ')}}</td>
                     <td>{{$news->author}}</td>
                     <td>{{$news->status}}</td>
                     <td>{{$news->created_at}}</td>
@@ -37,6 +38,7 @@
             @endforeach
             </tbody>
         </table>
+        {{$newsList->links()}}
     </div>
 
 @endsection

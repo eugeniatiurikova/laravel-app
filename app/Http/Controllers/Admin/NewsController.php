@@ -2,49 +2,44 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\News\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NewsTrait;
+use App\Http\Requests\Admin\News\Create;
+use App\Http\Requests\Admin\News\Edit;
 use App\Models\Category;
 use App\Models\News;
-use Illuminate\Http\Request;
+use App\Queries\NewsQueryBuilder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Enum;
 
 class NewsController extends Controller
 {
     use NewsTrait;
 
-    public function index(): View
+    public function index(NewsQueryBuilder $builder): View
     {
-        $news = app(News::class);
-//        dd($news->getNews());
-        return view('admin.news.index', ['newsList' => $news->getNews()]);
+        return view('admin.news.index', ['newsList' => $builder->getNews()]);
     }
 
     public function create()
     {
-        $categories = app(Category::class);
-        return view('admin.news.create', ['categoryList' => $categories->getCategories()]);
+        $statuses = StatusEnum::getValues();
+        $categories = Category::all();
+        return view('admin.news.create', ['categoryList' => $categories,'statuses' => $statuses]);
     }
 
-    public function store(Request $request)
+    public function store(Create $request, NewsQueryBuilder $builder): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255'],
-            'author' => ['required', 'string', 'min:5'],
-            'category' => ['required', 'string', 'min:5'],
-            'description' => ['required', 'string', 'min:10']
-        ]);
-        $data = [
-            'title' => $request->title,
-            'author' => $request->author,
-            'image' => $request->image,
-            'description' => $request->description,
-            'created_at' => now()->timezone('Europe/Moscow'),
-            'updated_at' => now()->timezone('Europe/Moscow')
-        ];
-        DB::table('news')->insert($data);
-        return response()->json($request->only(['title','author','category','description']));
+        $news = $builder->create($request->validated());
+        if($news->save()) {
+            $news->categories()->attach($request->getCategoryIds());
+            return redirect()->route('admin.news.index')
+                ->with('success','News successfully added');
+        }
+        return back()->with('error','Cannot add news');
     }
 
     public function show(string $id)
@@ -52,14 +47,21 @@ class NewsController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(NewsQueryBuilder $builder, int $id): View
     {
-        return view('admin.news.edit');
+        $statuses = StatusEnum::getValues();
+        $categories = Category::all();
+        return view('admin.news.edit', ['news' => $builder->getNewsById($id), 'categoryList' => $categories, 'statuses' => $statuses]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Edit $request, News $news, NewsQueryBuilder $builder): RedirectResponse
     {
-        //
+        if($builder->update($news, $request->validated())) {
+            $news->categories()->sync($request->getCategoryIds());
+            return redirect()->route('admin.news.index')
+                ->with('success','News successfully updated');
+        }
+        return back()->with('error','Cannot update news');
     }
 
     public function destroy(string $id)

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,11 +15,11 @@ class CategoriesHasNewsSeeder extends Seeder
 
     private function getData(): array {
         $data = [];
-        for($j=0; $j<10; $j++) {
-            for ($i = 0; $i < 10; $i++) {
+        for($j = 1; $j <= 10; $j++) {
+            for ($i = 1; $i <= 10; $i++) {
                 $data[] = [
-                    'category_id' => $j + 1,
-                    'news_id' => $i + 1
+                    'category_id' => $j,
+                    'news_id' => (($j - 1) * 10 ) + $i
                 ];
             }
         }

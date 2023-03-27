@@ -11,11 +11,14 @@
         </div>
     </div>
     <div class="table-responsive">
+        @include('inc.message')
+
         <table class="table table-striped table-sm">
             <thead>
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Created at</th>
+                <th scope="col">Updated at</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -24,6 +27,7 @@
                 <tr>
                     <td>{{$item->title}}</td>
                     <td>{{$item->created_at}}</td>
+                    <td>{{$item->updated_at}}</td>
                     <td><a href="{{ route('admin.categories.edit',['category' => $item->id]) }}">Edit</a> | <a href="">Delete</a></td>
                 </tr>
             @endforeach

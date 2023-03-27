@@ -7,27 +7,22 @@
         </div>
     </div>
     <div class="col-md-7 col-lg-8">
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                <x-alert type="warning" :message="$error"></x-alert>
-            @endforeach
-        @endif
-        <form class="needs-validation" novalidate method="post" action="{{ route('admin.categories.store') }}">
+        @include('inc.message')
+
+        <form class="needs-validation" novalidate method="post" action="{{ route('admin.categories.update', ['category' => $category]) }}">
             @csrf
+            @method('put')
             <div class="row g-3">
                 <div class="col-12">
-                    <label for="title" class="form-label">New category title</label>
-                    <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+                    <label for="title" class="form-label">Category title</label>
+                    <input type="text" class="form-control" name="title" id="title" value="{{ $category->title }}">
                     <div class="invalid-feedback">
-                        New category title is required
+                        Category title is required
                     </div>
                 </div>
                 <div class="col-12">
-                    <label for="description" class="form-label">New category description</label>
-                    <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea>
-                    <div class="invalid-feedback">
-                        New category description
-                    </div>
+                    <label for="description" class="form-label">Category description</label>
+                    <textarea class="form-control" name="description" id="description">{!! $category->description !!}</textarea>
                 </div>
             </div>
             <hr class="my-4">

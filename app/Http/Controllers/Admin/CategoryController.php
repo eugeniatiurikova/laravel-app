@@ -3,52 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\NewsTrait;
+use App\Http\Requests\Admin\Categories\Create;
+use App\Http\Requests\Admin\Categories\Edit;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Queries\CategoriesQueryBuilder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    use NewsTrait;
 
-    public function index(): View
+    public function index(CategoriesQueryBuilder $builder): View
     {
-        $categories = app(Category::class);
-        return view('admin.categories.index', ['categoriesList' => $categories->getCategories()]);
+        return view('admin.categories.index', ['categoriesList' => $builder->getCategories()]);
     }
 
     public function create()
     {
         return view('admin.categories.create');
-//        return response()->json(['title' => 'title', 'description' => 'description']);
-//        return response()->download('robots.txt');
     }
 
-    public function store(Request $request)
+    public function store(Create $request, CategoriesQueryBuilder $builder)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255'],
-            'description' =>['required', 'string', 'min:3']
-        ]);
-        $data = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'created_at' => now()->timezone('Europe/Moscow'),
-            'updated_at' => now()->timezone('Europe/Moscow')
-        ];
-        DB::table('categories')->insert($data);
-        return response()->json($request->only(['title','description']));
-
-//        file_put_contents()
-//        dd($request->only(['title', 'description']));
-//        dd($request->except(['_token']));
-//        dd($request->input('title','default title'));
-//        dd($request->title);
-//        dd($request->isMethod('POST'));
-//        dd($request->query('paramname','defaultname'));
-//        dd($request->get('paramname','defaultname')); //аналог query
+        $category = $builder->create($request->validated());
+        if($category->save()) {
+            return redirect()->route('admin.categories.index')
+                ->with('success','News successfully added');
+        }
+        return back()->with('error','Cannot add news');
     }
 
     public function show(string $id)
@@ -56,14 +38,18 @@ class CategoryController extends Controller
         //
     }
 
-    public function edit(string $id): View
+    public function edit(CategoriesQueryBuilder $builder, int $id): View
     {
-        return view('admin.categories.edit');
+        return view('admin.categories.edit', ['category' => $builder->getCategoryById($id)]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Edit $request, Category $category, CategoriesQueryBuilder $builder): RedirectResponse
     {
-        //
+        if($builder->update($category, $request->validated())) {
+            return redirect()->route('admin.categories.index')
+                ->with('success','Category successfully category');
+        }
+        return back()->with('error','Cannot update category');
     }
 
     public function destroy(string $id)

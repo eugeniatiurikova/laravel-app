@@ -7,12 +7,9 @@
         </div>
     </div>
     <div class="col-md-7 col-lg-8">
-        @if($errors->any())
-        @foreach($errors->all() as $error)
-                <x-alert type="warning" :message="$error"></x-alert>
-        @endforeach
-        @endif
-        <form class="needs-validation" novalidate method="post" action="{{ route('admin.categories.store', ['queryparam=1']) }}">
+        @include('inc.message')
+
+        <form class="needs-validation" novalidate method="post" action="{{ route('admin.categories.store') }}">
             @csrf
             <div class="row g-3">
                 <div class="col-12">
