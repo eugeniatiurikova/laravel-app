@@ -23,8 +23,8 @@ class Create extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:100'],
-            'email' => ['required', 'string', 'min:2', 'max:50'],
-            'url' => ['required', 'string', 'min:2', 'max:50'],
+            'email' => ['required', 'email:rfc,dns'],
+            'url' => ['required', 'url'],
             'description' => ['nullable', 'string', 'min:10']
         ];
     }

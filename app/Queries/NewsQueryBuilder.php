@@ -22,6 +22,30 @@ final class NewsQueryBuilder
             ->paginate(config('pagination.admin.news'));
     }
 
+    public function getPublishedNews(): Collection|LengthAwarePaginator
+    {
+        return $this->model
+            ->publishedNews()
+            ->with('categories')
+            ->paginate(config('pagination.admin.news'));
+    }
+
+    public function getVisibleNews(): Collection|LengthAwarePaginator
+    {
+        return $this->model
+            ->visibleNews()
+            ->with('categories')
+            ->paginate(config('pagination.admin.news'));
+    }
+
+    public function getDisabledNews(): Collection|LengthAwarePaginator
+    {
+        return $this->model
+            ->disabledNews()
+            ->with('categories')
+            ->paginate(config('pagination.admin.news'));
+    }
+
     public function getNewsById(int $id)
     {
         return $this->model

@@ -28,8 +28,8 @@
             @foreach($sourcesList as $item)
                 <tr>
                     <td>{{$item->name}}</td>
-                    <td>{{$item->email}}</td>
-                    <td>{{$item->url}}</td>
+                    <td><a href="mailto:{{$item->email}}">{{$item->email}}</a></td>
+                    <td><a href="{{$item->url}}">{{$item->url}}</a></td>
                     <td>{{$item->created_at}}</td>
                     <td>{{$item->updated_at}}</td>
                     <td><a href="{{ route('admin.sources.edit',['source' => $item->id]) }}">Edit</a> | <a href="">Delete</a></td>

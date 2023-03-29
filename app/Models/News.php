@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\News\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ class News extends Model
         'title',
         'author',
         'status',
+        'isVisible',
         'image',
         'description',
     ];
@@ -29,6 +31,23 @@ class News extends Model
 
     public function scopeNews(Builder $query, array $columns = ['*']): Builder {
         return $query->select($columns)->orderByDesc('updated_at');
+    }
+
+    public function scopeDisabledNews(Builder $query, array $columns = ['*']): Builder {
+        return $query->select($columns)
+            ->where('isVisible','=',0)
+            ->orWhere('status','=',StatusEnum::DRAFT)
+            ->orWhere('status','=',StatusEnum::BLOCKED)
+            ->orWhere('status','=',StatusEnum::DELETED)
+            ->orderByDesc('updated_at');
+    }
+
+    public function scopeVisibleNews(Builder $query, array $columns = ['*']): Builder {
+        return $query->select($columns)->where('isVisible','=',1)->orderByDesc('updated_at');
+    }
+
+    public function scopePublishedNews(Builder $query, array $columns = ['*']): Builder {
+        return $query->select($columns)->where('status','=',StatusEnum::PUBLISHED)->orderByDesc('updated_at');
     }
 
     public function scopeNewsById(Builder $query, int $id, array $columns = ['*']): ?Builder

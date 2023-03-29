@@ -12,14 +12,29 @@ use App\Models\News;
 use App\Queries\NewsQueryBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 
 class NewsController extends Controller
 {
 
-    public function index(NewsQueryBuilder $builder): View
+    public function index(NewsQueryBuilder $builder, Request $request): View
     {
-        return view('admin.news.index', ['newsList' => $builder->getNews()]);
+//        dd($request->asd);
+        switch ($request->select) {
+            case 'published':
+                $data = $builder->getPublishedNews();
+                break;
+            case 'visible':
+                $data = $builder->getVisibleNews();
+                break;
+            case 'disabled':
+                $data = $builder->getDisabledNews();
+                break;
+                default:
+                $data = $builder->getNews();
+        }
+        return view('admin.news.index', ['newsList' => $data]);
     }
 
     public function create()
