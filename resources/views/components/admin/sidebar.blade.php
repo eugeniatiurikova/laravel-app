@@ -14,11 +14,18 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.sources.*')) active @endif" href="{{ route('admin.sources.index') }}">
+                    <span data-feather="layers" class="align-text-bottom"></span>
+                    Sources
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.news.*')) active @endif" href="{{ route('admin.news.index') }}">
                     <span data-feather="file-text" class="align-text-bottom"></span>
                     News
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="users" class="align-text-bottom"></span>

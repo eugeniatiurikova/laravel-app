@@ -16,7 +16,6 @@ use Illuminate\Contracts\View\View;
 
 class NewsController extends Controller
 {
-    use NewsTrait;
 
     public function index(NewsQueryBuilder $builder): View
     {

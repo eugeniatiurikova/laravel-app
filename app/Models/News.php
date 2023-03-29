@@ -36,13 +36,6 @@ class News extends Model
         return $query->select($columns)->where('id','=',$id);
     }
 
-//    public function scopeNewsByCategoryId(Builder $query, int $id, array $columns = ['*']): ?Builder
-//    {
-//        return $query->select($columns)
-//            ->where('category_id','=',$id)
-//            ->orderByDesc('updated_at');
-//    }
-
     // Relations
 
     public function categories(): BelongsToMany
