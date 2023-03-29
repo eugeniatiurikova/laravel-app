@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('author',191)->default('Admin');
             $table->string('image',191)->nullable();
             $table->text('description')->nullable();
-//            $table->boolean('isVisible')->default(true);
+            $table->boolean('isVisible')->default(true);
             $table->timestamps();
         });
     }

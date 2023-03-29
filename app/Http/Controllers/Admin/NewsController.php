@@ -12,8 +12,7 @@ use App\Models\News;
 use App\Queries\NewsQueryBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\Enum;
+
 
 class NewsController extends Controller
 {
