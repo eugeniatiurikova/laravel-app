@@ -37,5 +37,19 @@ class Create extends FormRequest
             'image' => ['nullable', 'image', 'mimes:jpg,png'],
             'description' => ['required', 'string', 'min:10']
         ];
+    }bv
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'You have to fill the :attribute field'
+        ];
     }
+
+//    public function attributes(): array
+//    {
+//        return [
+//            'title' => 'заголовок'
+//        ];
+//    }
 }

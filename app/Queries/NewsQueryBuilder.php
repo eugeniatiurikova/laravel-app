@@ -14,28 +14,28 @@ final class NewsQueryBuilder
         $this->model = News::query();
     }
 
-    public function getNews(): Collection|LengthAwarePaginator
+    public function getNews(int $page): Collection|LengthAwarePaginator
     {
         return $this->model
             ->news()
             ->with('categories')
-            ->paginate(config('pagination.admin.news'));
+            ->paginate($page);
     }
 
-    public function getPublishedNews(): Collection|LengthAwarePaginator
+    public function getPublishedNews(int $page): Collection|LengthAwarePaginator
     {
         return $this->model
             ->publishedNews()
             ->with('categories')
-            ->paginate(config('pagination.admin.news'));
+            ->paginate($page);
     }
 
-    public function getVisibleNews(): Collection|LengthAwarePaginator
+    public function getVisibleNews(int $page): Collection|LengthAwarePaginator
     {
         return $this->model
             ->visibleNews()
             ->with('categories')
-            ->paginate(config('pagination.admin.news'));
+            ->paginate($page);
     }
 
     public function getDisabledNews(): Collection|LengthAwarePaginator

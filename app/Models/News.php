@@ -43,7 +43,10 @@ class News extends Model
     }
 
     public function scopeVisibleNews(Builder $query, array $columns = ['*']): Builder {
-        return $query->select($columns)->where('isVisible','=',1)->orderByDesc('updated_at');
+        return $query->select($columns)
+            ->where('isVisible','=',1)
+            ->orWhere('status','=',StatusEnum::PUBLISHED)
+            ->orderByDesc('updated_at');
     }
 
     public function scopePublishedNews(Builder $query, array $columns = ['*']): Builder {

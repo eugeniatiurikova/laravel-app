@@ -15,12 +15,12 @@ final class CategoriesQueryBuilder
         $this->model = Category::query();
     }
 
-    public function getCategories(): Collection|LengthAwarePaginator
+    public function getCategories(int $page): Collection|LengthAwarePaginator
     {
         return $this->model
             ->categories()
             ->with('news')
-            ->paginate(config('pagination.admin.categories'));
+            ->paginate($page);
     }
 
     public function getCategoryById(int $id)

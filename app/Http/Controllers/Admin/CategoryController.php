@@ -15,7 +15,8 @@ class CategoryController extends Controller
 
     public function index(CategoriesQueryBuilder $builder): View
     {
-        return view('admin.categories.index', ['categoriesList' => $builder->getCategories()]);
+        $page = config('pagination.admin.news');
+        return view('admin.categories.index', ['categoriesList' => $builder->getCategories($page)]);
     }
 
     public function create()
@@ -47,7 +48,7 @@ class CategoryController extends Controller
     {
         if($builder->update($category, $request->validated())) {
             return redirect()->route('admin.categories.index')
-                ->with('success','Category successfully category');
+                ->with('success','Category successfully updated');
         }
         return back()->with('error','Cannot update category');
     }

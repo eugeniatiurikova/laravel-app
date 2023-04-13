@@ -25,4 +25,5 @@
         <h2>No news today</h2>
 @endforelse
 </div>
+<p>&nbsp;</p>
 @endsection

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class User extends Authenticatable
 {
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin'
     ];
 
     /**
@@ -40,5 +43,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'bool'
     ];
+
+    public function scopeUsers(Builder $query, array $columns = ['*']): Builder
+    {
+        return $query->select($columns)->orderByDesc('updated_at');
+    }
+
+    public function scopeUserById(Builder $query, int $id, array $columns = ['*']): ?Builder
+    {
+        return $query->select($columns)->where('id','=',$id);
+    }
 }

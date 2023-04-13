@@ -51,6 +51,7 @@
                     <select class="form-control" style="height: 300px" name="categories[]" id="categories" multiple>
                         @foreach ($categoryList as $category)
                             <option value="{{$category->id}}" @if($news->categories->pluck('id')->contains($category->id)) selected @endif>{{$category->title}}</option>
+{{--                            in_array($category->id, $news->categories->pluck('id')->toArray())--}}
                         @endforeach
                     </select>
                     <div class="invalid-feedback">

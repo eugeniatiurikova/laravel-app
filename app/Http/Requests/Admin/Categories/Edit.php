@@ -23,7 +23,8 @@ class Edit extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3', 'max:100'],
-            'description' => ['required', 'string', 'min:10']
+            'description' => ['required', 'string', 'min:10'],
+            'is_admin' => ['required', 'bool']
         ];
     }
 }

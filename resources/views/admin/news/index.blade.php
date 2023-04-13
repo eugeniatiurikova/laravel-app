@@ -38,12 +38,42 @@
                     <td>{{$news->status}}</td>
                     <td>{{$news->isVisible}}</td>
                     <td>{{$news->updated_at}}</td>
-                    <td><a href="{{ route('admin.news.edit',['news' => $news->id]) }}">Edit</a> | <a href="">Delete</a></td>
+                    <td><a href="{{ route('admin.news.edit',['news' => $news]) }}">Edit</a>&nbsp;|&nbsp;
+                        <a href="javascript:;" class="delete" rel="{{ $news->id }}">Delete</a></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
         {{$newsList->appends($_GET)->links()}}
     </div>
-
 @endsection
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+           let elements = document.querySelectorAll('.delete');
+           elements.forEach(function(e,i) {
+              e.addEventListener('click', function() {
+                  const id = this.getAttribute('rel');
+                    if(confirm('Are you sure?')) {
+                        sendData(`/admin/news/${id}`).then(() => {
+                            location.reload()
+                        })
+                    } else {
+                        alert("Delete cancelled")
+                    }
+               })
+            })
+        });
+
+        async function sendData(url) {
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+            let result = await response.json();
+            return result.ok;
+        }
+    </script>
+@endpush

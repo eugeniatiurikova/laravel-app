@@ -10,12 +10,13 @@ class CategoriesController extends Controller
 
     public function index(CategoriesQueryBuilder $builder): View
     {
-        return view('news.category',['newsList' => $builder->getCategories()]);
+        $page = config('pagination.client.categories');
+        return view('news.category',['newsList' => $builder->getCategories($page)]);
     }
 
-    public function category(CategoriesQueryBuilder $builder,int $catId) {
-        $category = $builder->getCategoryById($catId);
-        return \view('news.index', ['category' => $category]);
+    public function category(CategoriesQueryBuilder $builder,int $catId)
+    {
+        return \view('news.index', ['category' => $builder->getCategoryById($catId)]);
     }
 
 }

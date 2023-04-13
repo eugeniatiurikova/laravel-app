@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use \App\Http\Controllers\Admin\SourceController as AdminSourceController;
+use \App\Http\Controllers\Admin\UsersController as AdminUsersController;
+use \App\Http\Controllers\Account\IndexController as AccountController;
 
 
 /*
@@ -24,12 +26,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function (): void {
+Route::middleware('auth')->group(function() {
+    Route::get('/account', AccountController::class)->name('account');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], static function (): void {
     Route::get('/', IndexController::class)->name('index');
     Route::resource('/categories', AdminCategoryController::class);
     Route::resource('/edit', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
     Route::resource('/sources', AdminSourceController::class);
+    Route::resource('/users', AdminUsersController::class);
+});
 });
 
 Route::get('/news', [CategoriesController::class, 'index'])->name('news');
@@ -42,8 +48,22 @@ Route::get('/news/{catId}/{id}', [NewsController::class, 'show'])
     ->where('catId','\d+')
     ->name('show');
 
+//Route::get('/sessions', function () {
+//    $name = 'example';
+//    if(session()->has($name)) {
+//        dd(session()->all());
+//        session()->remove($name);
+//    };
+//    session()->get($name);
+//    session()->put($name, 'Test example');
+//});
+
 //Route::get('/collections', function () {
 //    $names = ['John','Ann','Peter','Lilly','Janice','Victor',];
 //    $collection = collect($names);
 //    dd($collection);
 //});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
