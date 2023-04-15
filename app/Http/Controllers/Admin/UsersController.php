@@ -57,9 +57,9 @@ class UsersController extends Controller
      */
     public function update(Edit $request, User $user, UsersQueryBuilder $builder): RedirectResponse
     {
-        if($request['is_admin']) { $request['is_admin'] = true; } else { $request['is_admin'] = false; }
-//        dd($request);
-        if($builder->update($user, $request->validated())) {
+        $request['is_admin'] = (bool)$request['is_admin'];
+        if($request->validated()) {
+            $builder->update($user, $request->all());
             return redirect()->route('admin.users.index')
                 ->with('success','User successfully updated');
         }

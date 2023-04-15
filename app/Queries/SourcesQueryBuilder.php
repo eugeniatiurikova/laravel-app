@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class SourcesQueryBuilder
+final class SourcesQueryBuilder
 {
     public function __construct() {
         $this->model = Source::query();

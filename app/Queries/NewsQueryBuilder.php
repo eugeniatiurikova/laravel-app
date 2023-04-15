@@ -22,6 +22,14 @@ final class NewsQueryBuilder
             ->paginate($page);
     }
 
+    public function getLastNews(int $count = 5): Collection|LengthAwarePaginator
+    {
+        return $this->model
+            ->lastNews($count)
+            ->with('categories')
+            ->get();
+    }
+
     public function getPublishedNews(int $page): Collection|LengthAwarePaginator
     {
         return $this->model

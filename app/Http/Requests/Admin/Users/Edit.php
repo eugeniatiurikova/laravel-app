@@ -23,7 +23,7 @@ class Edit extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:20'],
-            'email' => ['required', 'email:rfc,dns']
+            'email' => ['required', 'email:rfc,dns'],
         ];
     }
 }

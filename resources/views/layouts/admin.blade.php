@@ -8,17 +8,20 @@
     <title>News - admin</title>
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
+{{--    @vite(['resources/sass/app.scss', 'resources/js/app.js'])--}}
 </head>
 
 <body>
+{{--<div class="container-fluid">--}}
+{{--    <div class="row">--}}
+{{--        <x-admin.sidebar />--}}
+{{--<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">--}}
 <x-admin.header />
-<div class="container-fluid">
-    <div class="row">
-        <x-admin.sidebar />
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<div id="app" class="container">
+        <main>
             @yield('content')
         </main>
-    </div>
+{{--    </div>--}}
 </div>
 
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" ></script>

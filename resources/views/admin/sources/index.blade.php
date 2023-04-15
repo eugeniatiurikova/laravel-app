@@ -32,7 +32,7 @@
                     <td><a href="{{$item->url}}">{{$item->url}}</a></td>
                     <td>{{$item->created_at}}</td>
                     <td>{{$item->updated_at}}</td>
-                    <td><a href="{{ route('admin.sources.edit',['source' => $item->id]) }}">Edit</a> | <a href="">Delete</a></td>
+                    <td><a href="{{ route('admin.sources.edit',['source' => $item->id]) }}">Edit</a> | <a href="{{ route('admin.parser',['link' => $item->url]) }}">Parse</a> | <a href="">Delete</a></td>
                 </tr>
             @endforeach
             </tbody>

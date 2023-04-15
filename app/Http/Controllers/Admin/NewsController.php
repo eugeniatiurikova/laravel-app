@@ -35,7 +35,7 @@ class NewsController extends Controller
             case 'disabled':
                 $data = $builder->getDisabledNews();
                 break;
-                default:
+            default:
                 $data = $builder->getNews($page);
         }
         return view('admin.news.index', ['newsList' => $data]);

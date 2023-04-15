@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserLastLoginEvent;
+use App\Listeners\UserLastLoginListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +19,13 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        UserLastLoginEvent::class => [
+            UserLastLoginListener::class
+        ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
         ],
     ];
 

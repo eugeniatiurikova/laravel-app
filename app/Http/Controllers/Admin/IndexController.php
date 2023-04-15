@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Queries\NewsQueryBuilder;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -10,8 +11,9 @@ class IndexController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(NewsQueryBuilder $builder, Request $request)
     {
-        return view('admin.index');
+        $data = $builder->getLastNews(6);
+        return view('admin.index', ['newsList' => $data]);
     }
 }

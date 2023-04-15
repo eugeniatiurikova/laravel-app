@@ -6,6 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
+                <a href="{{ route('social.redirect', ['driver' => 'google']) }}">Login by Google</a>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

@@ -23,8 +23,8 @@ class Edit extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:100'],
-            'email' => ['required', 'string', 'min:2', 'max:50'],
-            'url' => ['required', 'string', 'min:2', 'max:50'],
+            'email' => ['required', 'string', 'min:2', 'max:100'],
+            'url' => ['required', 'string', 'min:2', 'max:200'],
             'description' => ['nullable', 'string', 'min:10']
         ];
     }
