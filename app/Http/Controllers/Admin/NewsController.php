@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\News\Edit;
 use App\Models\Category;
 use App\Models\News;
 use App\Queries\NewsQueryBuilder;
+use App\Services\UploadService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -23,7 +24,6 @@ class NewsController extends Controller
 
     public function index(NewsQueryBuilder $builder, Request $request): View
     {
-//        dd($request->asd);
         $page = config('pagination.admin.news');
         switch ($request->select) {
             case 'published':
@@ -38,26 +38,29 @@ class NewsController extends Controller
             default:
                 $data = $builder->getNews($page);
         }
-        return view('admin.news.index', ['newsList' => $data]);
+        return view('admin.news.index', ['newsList' => $data, 'select' => $request->select]);
     }
 
     public function create()
     {
-        //        dd($request->all());
         $statuses = StatusEnum::getValues();
         $categories = Category::all();
         return view('admin.news.create', ['categoryList' => $categories,'statuses' => $statuses]);
     }
 
-    public function store(Create $request, NewsQueryBuilder $builder): RedirectResponse
+    public function store(Create $request, NewsQueryBuilder $builder, array $newNews = []): RedirectResponse
     {
-        $news = $builder->create($request->validated());
+        if ($newNews === []) {
+            $newNews = $request->validated();
+            $categoryIds = $request->getCategoryIds();
+        } else $categoryIds = $newNews['categories'];
+
+        $news = $builder->create($newNews);
         if($news->save()) {
-            $news->categories()->attach($request->getCategoryIds());
+            $news->categories()->attach($categoryIds);
             return redirect()->route('admin.news.index')
                 ->with('success','News successfully added');
 //            ->with('success',__('News successfully added'));
-
         }
         return back()->with('error','Cannot add news');
     }
@@ -69,9 +72,14 @@ class NewsController extends Controller
         return view('admin.news.edit', ['news' => $news, 'categoryList' => $categories, 'statuses' => $statuses]);
     }
 
-    public function update(Edit $request, News $news, NewsQueryBuilder $builder): RedirectResponse
+    public function update(Edit $request, News $news, UploadService $uploadService, NewsQueryBuilder $builder): RedirectResponse
     {
-        if($builder->update($news, $request->validated())) {
+        $validated = $request->validated();
+        if($request->hasFile('image')) {
+            $validated['image'] = '/storage/' . $uploadService->uploadImage($request->file('image'),'news');
+        }
+
+         if($builder->update($news, $validated)) {
             $news->categories()->sync($request->getCategoryIds());
             return redirect()->route('admin.news.index')
                 ->with('success','News successfully updated');

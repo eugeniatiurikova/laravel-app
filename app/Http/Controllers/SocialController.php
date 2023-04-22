@@ -15,12 +15,12 @@ class SocialController extends Controller
 
     public function callback(string $driver, Social $social)
     {
-        if (Socialite::driver($driver)->user()) {
+        try {
             return redirect(
-                $social->loginOrRegisterViaSocialNetwork(
-                    Socialite::driver($driver)->user()
-                )
+                $social->loginOrRegisterViaSocialNetwork(Socialite::driver($driver)->user())
             );
-        } else return redirect('/register');
+        } catch (\Exception) {
+            return redirect('/register');
+        }
     }
 }

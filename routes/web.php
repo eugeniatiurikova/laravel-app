@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\IndexController;
-use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\Admin\ParseController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SocialController;
@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function() {
         Route::resource('/news', AdminNewsController::class);
         Route::resource('/sources', AdminSourceController::class);
         Route::resource('/users', AdminUsersController::class);
-        Route::get('/parser', ParserController::class)->name('parser');
+        Route::resource('/parser', ParseController::class);
     });
 });
 

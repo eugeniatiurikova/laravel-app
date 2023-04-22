@@ -25,8 +25,10 @@ final class NewsQueryBuilder
     public function getLastNews(int $count = 5): Collection|LengthAwarePaginator
     {
         return $this->model
-            ->lastNews($count)
+            ->news()
             ->with('categories')
+            ->orderByDesc('updated_at')
+            ->limit($count)
             ->get();
     }
 
@@ -57,11 +59,22 @@ final class NewsQueryBuilder
     public function getNewsById(int $id)
     {
         return $this->model
-            ->newsById($id)
+            ->news()
             ->with('categories')
-            ->get()[0];
+            ->where('id','=',$id)
+            ->get()
+            ->first();
     }
 
+    public function getNewsByTitle(string $title)
+    {
+        return $this->model
+            ->news()
+            ->with('categories')
+            ->where('title','=',$title)
+            ->get()
+            ->first();
+    }
     public function create(array $data): News|bool
     {
         return News::create($data);

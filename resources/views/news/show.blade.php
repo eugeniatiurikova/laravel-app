@@ -10,9 +10,9 @@
 
     <div class="blog-post">
         <p>&nbsp;</p>
-        <img src="{{ $news->image }}" alt="{{ $news->title }}" style="width: 400px; height: 250px;">
+        <img src="{{ $news->image }}" alt="{{ $news->title }}" style="width: 400px;">
         <p>&nbsp;</p>
-        <p>{!! $news->description !!}</p>
+        {!! $news->description !!}
         <p class="blog-post-meta">{{ $news->created_at }} by {{ $news->author }}</p>
         <a href="{{ route('news') }}">← Back to news categories</a>
     </div>

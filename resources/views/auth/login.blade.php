@@ -5,8 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-                <a href="{{ route('social.redirect', ['driver' => 'google']) }}">Login by Google</a>
+                <div class="card-header d-flex flex-wrap justify-content-between">
+                    {{ __('Login') }}
+                    <div class="text-end"><a href="{{ route('social.redirect', ['driver' => 'google']) }}">by Google</a></div>
+                </div>
+
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

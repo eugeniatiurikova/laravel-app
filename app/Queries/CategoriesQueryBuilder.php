@@ -26,10 +26,21 @@ final class CategoriesQueryBuilder
     public function getCategoryById(int $id)
     {
         return $this->model
-            ->categoryById($id)
+            ->categories()
             ->with('news')
             ->where('id','=',$id)
-            ->get()[0];
+            ->get()
+            ->first();
+    }
+
+    public function getCategoryByTitle(string $title)
+    {
+        return $this->model
+            ->categories()
+            ->with('news')
+            ->where('title','=',$title)
+            ->get()
+            ->first();
     }
 
     public function create(array $data): Category|bool

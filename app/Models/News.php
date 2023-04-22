@@ -49,19 +49,10 @@ class News extends Model
             ->orderByDesc('updated_at');
     }
 
-    public function scopeLastNews(Builder $query, int $count, array $columns = ['*']): Builder {
-        return $query->select($columns)
-            ->orderByDesc('updated_at')
-            ->limit($count);
-    }
-
     public function scopePublishedNews(Builder $query, array $columns = ['*']): Builder {
-        return $query->select($columns)->where('status','=',StatusEnum::PUBLISHED)->orderByDesc('updated_at');
-    }
-
-    public function scopeNewsById(Builder $query, int $id, array $columns = ['*']): ?Builder
-    {
-        return $query->select($columns)->where('id','=',$id);
+        return $query->select($columns)
+            ->where('status','=',StatusEnum::PUBLISHED)
+            ->orderByDesc('updated_at');
     }
 
     // Relations

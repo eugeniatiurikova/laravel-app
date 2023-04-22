@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Categories\Create;
 use App\Http\Requests\Admin\Categories\Edit;
 use App\Models\Category;
 use App\Queries\CategoriesQueryBuilder;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 
@@ -53,8 +54,14 @@ class CategoryController extends Controller
         return back()->with('error','Cannot update category');
     }
 
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return response()->json('ok');
+        } catch (Exception $exception) {
+            \Log::error($exception->getMessage(), $exception->getTrace());
+            return response()->json('error', 400);
+        }
     }
 }

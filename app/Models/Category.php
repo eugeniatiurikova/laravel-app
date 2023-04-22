@@ -16,6 +16,7 @@ class Category extends Model
         'id',
         'title',
         'description',
+        'deleted',
         'created_at',
         'updated_at'
     ];
@@ -24,18 +25,13 @@ class Category extends Model
         'id',
         'title',
         'description',
+        'deleted',
     ];
 
     public function scopeCategories(Builder $query, array $columns = ['*']): Builder
     {
         return $query->select($columns)->orderByDesc('updated_at');
     }
-
-    public function scopeCategoryById(Builder $query, int $id, array $columns = ['*']): ?Builder
-    {
-        return $query->select($columns)->where('id','=',$id);
-    }
-
 
     // Relations
 

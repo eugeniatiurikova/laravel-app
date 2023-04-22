@@ -4,10 +4,6 @@
         <h1 class="h2">Categories</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-outline-secondary me-2">Add new</a>
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar" class="align-text-bottom"></span>
-                This week
-            </button>
         </div>
     </div>
     <div class="table-responsive">
@@ -28,7 +24,7 @@
                     <td>{{$item->title}}</td>
                     <td>{{$item->created_at}}</td>
                     <td>{{$item->updated_at}}</td>
-                    <td><a href="{{ route('admin.categories.edit',['category' => $item->id]) }}">Edit</a> | <a href="">Delete</a></td>
+                    <td><a href="{{ route('admin.categories.edit',['category' => $item->id]) }}">Edit</a></td>
                 </tr>
             @endforeach
             </tbody>
@@ -36,3 +32,4 @@
         {{$categoriesList->links()}}
     </div>
 @endsection
+

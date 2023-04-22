@@ -5,12 +5,16 @@
         @forelse($newsList as $news)
             <div class="col">
                 <div class="card shadow-sm">
-                    <img src="{{ $news->image }}" alt="{{ $news->title }}" width="100%" height="225">
+                    <img width="100%" height="225" style="background-image: url('{{ $news->image }}');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                ">
                     <div class="card-body">
                         <p class="card-text">
                             <b class="mb-0">@if($loop->first)<span style="color:red">Hot! </span>@endif
                                 <a class="text-dark" href="{{ route('show', ['catId' => $news->categories[0]->id, 'id' => $news->id]) }}">{{ $news->title }}</a>
-                            </b><br>{!! $news->description !!}
+                            </b><br>{!! mb_substr($news->description,0,80) !!}
                             <p>@foreach($news->categories as $category)
                                     <a href="{{ route('category',['catId' => $category->id]) }}">{{ $category->title }}</a>
                                     @if(!($loop->last))<span class="text-muted">&nbsp;|&nbsp;</span>@endif

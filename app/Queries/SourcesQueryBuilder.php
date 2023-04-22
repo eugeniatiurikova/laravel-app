@@ -24,7 +24,8 @@ final class SourcesQueryBuilder
     {
         return $this->model
             ->sourceById($id)
-            ->get()[0];
+            ->get()
+            ->first();
     }
 
     public function create(array $data): Source|bool

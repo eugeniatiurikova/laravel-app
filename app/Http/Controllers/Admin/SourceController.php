@@ -7,6 +7,7 @@ use App\Models\Source;
 use App\Queries\SourcesQueryBuilder;
 use App\Http\Requests\Admin\Sources\Create;
 use App\Http\Requests\Admin\Sources\Edit;
+use Exception;
 
 class SourceController extends Controller
 {
@@ -70,8 +71,14 @@ class SourceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Source $source)
     {
-        //
+        try {
+            $source->delete();
+            return response()->json('ok');
+        } catch (Exception $exception) {
+            \Log::error($exception->getMessage(), $exception->getTrace());
+            return response()->json('error', 400);
+        }
     }
 }

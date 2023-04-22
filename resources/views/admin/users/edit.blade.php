@@ -13,7 +13,10 @@
             @csrf
             @method('put')
             <div class="row g-3">
-                <div class="col-12">
+                @if ($user->avatar)
+                    <div class="col-2"><img src="{{ $user->avatar }}" width="100%"></div>
+                @endif
+                <div class="@if($user->avatar) col-10 @else col-12 @endif">
                     <label for="name" class="form-label">User name</label>
                     <input type="text" class="form-control" name="name" id="name" value="{{ $user->name }}">
                     <div class="invalid-feedback">

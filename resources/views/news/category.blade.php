@@ -10,7 +10,7 @@
                         <p class="card-text">
                             <b class="mb-0">
                                 <a href="{{ route('category',['catId' => $news->id]) }}"> {{$news->title}}</a>
-                            </b><br>{!! $news->description !!}
+                            </b><br>{!! mb_substr($news->description,0,80) !!}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">{{ $news->created_at->format('Y-m-d') }}</small>

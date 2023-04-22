@@ -2,13 +2,18 @@
 @section('content')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Parsed News</h1>
-{{--        <div class="btn-toolbar mb-2 mb-md-0">--}}
-{{--            <a href="{{ route('admin.news.index', ['select' => 'published']) }}" class="btn btn-sm btn-outline-secondary me-2">Published</a>--}}
-{{--            <a href="{{ route('admin.news.index', ['select' => 'visible']) }}" class="btn btn-sm btn-outline-secondary me-2">Visible</a>--}}
-{{--            <a href="{{ route('admin.news.index', ['select' => 'disabled']) }}" class="btn btn-sm btn-outline-secondary me-2">Unactive</a>--}}
-{{--            <a href="{{ route('admin.news.create') }}" class="btn btn-sm btn-primary me-2">Add new</a>--}}
-{{--        </div>--}}
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ $link }}" class="btn btn-sm btn-outline-secondary me-2">View link</a>
+            <form id="parse-form" action="{{ route('admin.parser.store',['link' => $link]) }}" method="POST" class="d-none">
+                @csrf
+            </form>
+            <a class="btn btn-sm btn-primary me-2"
+               href="{{ route('admin.parser.store',['link' => $link]) }}"
+               onclick="event.preventDefault(); document.getElementById('parse-form').submit();">Add to database
+            </a>
+        </div>
     </div>
+    @if($newsList)
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
@@ -24,7 +29,7 @@
                 <tr>
                     <td>{{$news['title']}}</td>
                     <td>{{$newsList['title']}}</td>
-                    <td>{{$news['description']}}</td>
+                    <td>{!! $news['description'] !!}</td>
                     <td>{{$news['pubDate']}}</td>
                 </tr>
             @endforeach
@@ -32,5 +37,8 @@
         </table>
 {{--        {{$newsList->appends($_GET)->links()}}--}}
     </div>
+    @else
+        <p>No links to parse</p>
+    @endif
 @endsection
 

@@ -36,6 +36,8 @@ class User extends Authenticatable // implements MustVerifyEmail
         'password',
         'avatar',
         'last_login_at',
+        'created_at',
+        'updated_at',
         'is_admin'
     ];
 
@@ -67,7 +69,7 @@ class User extends Authenticatable // implements MustVerifyEmail
 
     public function scopeUsers(Builder $query, array $columns = ['*']): Builder
     {
-        return $query->select($columns)->orderByDesc('updated_at');
+        return $query->select($columns)->orderByDesc('last_login_at');
     }
 
     public function scopeUserById(Builder $query, int $id, array $columns = ['*']): ?Builder

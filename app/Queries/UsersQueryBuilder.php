@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 final class UsersQueryBuilder
 {
@@ -27,7 +28,8 @@ final class UsersQueryBuilder
         return $this->model
             ->userById($id)
             ->where('id','=',$id)
-            ->get()[0];
+            ->get()
+            ->first();
     }
 
     public function create(array $data): User|bool
@@ -37,6 +39,8 @@ final class UsersQueryBuilder
 
     public function update(User $user, array $data): bool
     {
-        return $user->fill($data)->save();
+        return $user->fill(
+            array_merge($data, ['password' => Hash::make($data['password'])])
+        )->save();
     }
 }
